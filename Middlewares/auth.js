@@ -70,7 +70,7 @@ const Auth = (req, res, next) => {
 const AdminAuth = (req, res, next) => {
     let Admintoken = req.cookies.Admintoken || req.header('Authorization')?.replace('Bearer ', '');
 
-    console.log("Received token:", Admintoken);  // Log token for debugging
+    console.log("Received token:", Admintoken);  
 
     if (Admintoken) {
         try {
