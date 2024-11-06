@@ -17,23 +17,14 @@ app.use(express.json());
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
-// app.use(
-//   corsOptions({
-    
-    
-//     credentials: true,
-//   })
-// );
+app.use(
+  cors({
+    origin: "https://pasient-frontend.vercel.app",
+    allowedHeaders: 'Content-Type, Authorization',
+    credentials: true,
+  })
+);
 
-
-const corsOptions = {
-  origin: "https://pasient-frontend.vercel.app", 
-  allowedHeaders: 'Content-Type, Authorization',// Replace with your frontend domain
-  methods: ['GET', 'POST'],
-  credentials: true,
-};
-
-app.use(cors(corsOptions)); 
 
 app.use(cookie());
 
