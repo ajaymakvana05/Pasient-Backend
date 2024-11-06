@@ -24,6 +24,9 @@ app.use(
     credentials: true,
   })
 );
+
+app.use(cors(corsOptions)); 
+
 app.use(cookie());
 
 app.use("/patient", PatientRoute);
