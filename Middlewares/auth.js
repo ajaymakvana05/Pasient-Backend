@@ -68,26 +68,27 @@ const Auth = (req, res, next) => {
 // };
 
 const AdminAuth = (req, res, next) => {
+    // Check for the token in the cookies or the Authorization header
     let Admintoken = req.cookies.Admintoken || req.header('Authorization')?.replace('Bearer ', '');
 
-    console.log("Received token:", Admintoken);  // Log token for debugging
+    console.log("Received token:", Admintoken);  // Debugging the received token
 
     if (Admintoken) {
         try {
+            // Verify the token
             const decode = jwt.verify(Admintoken, process.env.AdminSecrate);
-            req.adminID = decode.id;
-            console.log("Decoded Admin ID:", req.adminID); // Log decoded info
-            next();
+            req.adminID = decode.id;  // Attach decoded admin ID to the request object
+            console.log("Decoded Admin ID:", req.adminID); // Debugging decoded admin ID
+            next();  // Allow the request to proceed
         } catch (error) {
-            console.error("Token verification failed:", error.message, error);
-            return res.status(403).json("Invalid token");
+            console.error("Token verification failed:", error.message); // More detailed logging
+            return res.status(403).json({ message: "Invalid token", error: error.message });
         }
     } else {
         console.error("Authorization failed: No token provided");
-        return res.status(403).json("You are not authorized");
+        return res.status(403).json({ message: "You are not authorized" });
     }
 };
-
 
 
 const DoctorAuth = (req, res, next) => {

@@ -42,29 +42,70 @@ const signup = async (req, res) => {
     }
 };
 
+// const login = async (req, res) => {
+//     try {
+//         const { email, password } = req.body;
+
+//         if (!email || !password) {
+//             return res.status(400).json({ message: "Email and password are required" });
+//         }
+
+//         let data = await AdmintModel.findOne({ email: email });
+//         if (!data) {
+//             return res.status(400).json({ message: "User not found" });
+//         }
+
+//         const isMatch = await bcrypt.compare(password, data.password);
+//         if (!isMatch) {
+//             return res.status(400).json({ message: "Password incorrect" });
+//         }
+
+//         let Admintoken = jwt.sign({ id: data._id }, process.env.AdminSecrate, { expiresIn: '1h' });
+
+//         res.cookie("Admintoken", Admintoken).cookie("id", data._id);
+
+//         res.status(200).json({ message: "Successfully Login", data, Admintoken });
+
+//     } catch (error) {
+//         console.error("Login error:", error);
+//         return res.status(500).json({ message: "Internal server error" });
+//     }
+// };
+
 const login = async (req, res) => {
     try {
         const { email, password } = req.body;
 
+        // Validate input
         if (!email || !password) {
             return res.status(400).json({ message: "Email and password are required" });
         }
 
+        // Check if the user exists
         let data = await AdmintModel.findOne({ email: email });
         if (!data) {
             return res.status(400).json({ message: "User not found" });
         }
 
+        // Verify password
         const isMatch = await bcrypt.compare(password, data.password);
         if (!isMatch) {
             return res.status(400).json({ message: "Password incorrect" });
         }
 
+        // Generate JWT token
         let Admintoken = jwt.sign({ id: data._id }, process.env.AdminSecrate, { expiresIn: '1h' });
 
-        res.cookie("Admintoken", Admintoken).cookie("id", data._id);
+        // Set cookies with added security options
+        res.cookie("Admintoken", Admintoken, {
+            httpOnly: true, // Prevent client-side access to the cookie
+            secure: process.env.NODE_ENV === 'production', // Secure cookie in production
+            sameSite: 'Strict', // To prevent CSRF
+            maxAge: 3600000 // 1 hour
+        }).cookie("id", data._id);
 
-        res.status(200).json({ message: "Successfully Login", data, Admintoken });
+        // Send response
+        res.status(200).json({ message: "Successfully logged in", data, Admintoken });
 
     } catch (error) {
         console.error("Login error:", error);
