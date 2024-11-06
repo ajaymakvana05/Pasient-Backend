@@ -18,7 +18,7 @@ const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 
 app.use(
-  cors({
+  corsOptions({
     origin: "https://pasient-frontend.vercel.app",
     allowedHeaders: 'Content-Type, Authorization',
     credentials: true,
