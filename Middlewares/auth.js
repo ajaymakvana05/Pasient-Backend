@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken');
 require("dotenv").config();
 
 
+
+
 const Auth = (req, res, next) => {
     // const { PatientToken } = req.cookies;
 
@@ -68,13 +70,13 @@ const Auth = (req, res, next) => {
 const AdminAuth = (req, res, next) => {
     let { Admintoken } = req.cookies;
 
-    // console.log("Received token:", Admintoken); 
+    console.log("Received token:", Admintoken);  // Log token for debugging
 
     if (Admintoken) {
         try {
             const decode = jwt.verify(Admintoken, process.env.AdminSecrate);
             req.adminID = decode.id;
-            // console.log("Decoded Admin ID:", req.adminID);
+            console.log("Decoded Admin ID:", req.adminID); // Log decoded info
             next();
         } catch (error) {
             console.error("Token verification failed:", error.message, error);
@@ -82,9 +84,10 @@ const AdminAuth = (req, res, next) => {
         }
     } else {
         console.error("Authorization failed: No token provided");
-        res.status(403).json("You are not authorized");
+        return res.status(403).json("You are not authorized");
     }
 };
+
 
 const DoctorAuth = (req, res, next) => {
     const { Doctortoken } = req.cookies;
