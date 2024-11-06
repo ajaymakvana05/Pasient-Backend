@@ -68,7 +68,7 @@ const Auth = (req, res, next) => {
 // };
 
 const AdminAuth = (req, res, next) => {
-    let { Admintoken } = req.cookies;
+    let Admintoken = req.cookies.Admintoken || req.header('Authorization')?.replace('Bearer ', '');
 
     console.log("Received token:", Admintoken);  // Log token for debugging
 
@@ -87,6 +87,7 @@ const AdminAuth = (req, res, next) => {
         return res.status(403).json("You are not authorized");
     }
 };
+
 
 
 const DoctorAuth = (req, res, next) => {

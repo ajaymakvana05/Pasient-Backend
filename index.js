@@ -20,6 +20,7 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: "https://pasient-frontend.vercel.app",
+    allowedHeaders: 'Content-Type, Authorization',
     credentials: true,
   })
 );
