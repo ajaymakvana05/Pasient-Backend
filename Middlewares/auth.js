@@ -6,21 +6,8 @@ require("dotenv").config();
 
 const Auth = (req, res, next) => {
     // const { PatientToken } = req.cookies;
-
-    // if (PatientToken) {
-    //     try {
-    //         const decoded = jwt.verify(PatientToken, process.env.jwtSecrate);
-    //         req.body.PatientID = decoded.id; // Ensure 'id' exists in token payload
-    //         next();
-    //     } catch (error) {
-    //         console.error("Token verification failed:", error);
-    //         return res.status(401).json({ message: "Invalid token signature" });
-    //     }
-    // } else {
-    //     console.warn("Authorization token not found");
-    //     return res.status(403).json({ message: "You are not authorized" });
-    // }
-    const { PatientToken } = req.cookies;
+    let PatientToken = req.cookies.PatientToken || req.header('Authorization')?.replace('Bearer ', '');
+    console.log("Received token:", PatientToken);  
 
     if (PatientToken) {
         try {
