@@ -2,9 +2,76 @@ const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken")
 const PatientModel = require("../Models/PatientSchema")
 
+// const signup = async (req, res) => {
+//     // console.log('Received data:', req.body);
+//     try {
+//         const {
+//             firstname,
+//             lastname,
+//             email,
+//             phonenumber,
+//             age,
+//             height,
+//             weight,
+//             BloodGroup,
+//             dateofbirth,
+//             country,
+//             state,
+//             city,
+//             gender,
+//             address,
+//             password,
+//             confirmPassword,
+//         } = req.body;
+
+//         // Check if user already exists
+//         const existingUser = await PatientModel.findOne({ email: email });
+//         if (existingUser) {
+//             return res.status(400).json({ msg: "Email already exists" });
+//         }
+
+//         // Check if passwords match
+//         if (password !== confirmPassword) {
+//             return res.status(400).json({ msg: "Passwords do not match" });
+//         }
+
+//         // Hash the password
+//         const hashedPassword = await bcrypt.hash(password, 10);
+
+//         // Create new user object
+//         const newUser = new PatientModel({
+//             firstname,
+//             lastname,
+//             email,
+//             phonenumber,
+//             age,
+//             height,
+//             weight,
+//             BloodGroup,
+//             dateofbirth,
+//             country,
+//             state,
+//             city,
+//             gender,
+//             address,
+//             password: hashedPassword,
+
+//         });
+
+//         // Save the user to the database
+//         await newUser.save();
+
+//         res.status(200).json({ msg: "User registered successfully", newUser });
+//     } catch (error) {
+//         console.error('Signup error:', error);
+//         res.status(500).json({ msg: "Internal server error", error: error.message });
+//     }
+// };
+
 const signup = async (req, res) => {
-    // console.log('Received data:', req.body);
+    console.log('Received data:', req.body); // Add a log to see the incoming data
     try {
+        // Destructure data from req.body
         const {
             firstname,
             lastname,
@@ -24,19 +91,25 @@ const signup = async (req, res) => {
             confirmPassword,
         } = req.body;
 
+        // Log to check if data is correctly destructured
+        console.log('Destructured data:', { firstname, lastname, email });
+
         // Check if user already exists
         const existingUser = await PatientModel.findOne({ email: email });
         if (existingUser) {
+            console.log('User already exists:', email); // Log the existing user
             return res.status(400).json({ msg: "Email already exists" });
         }
 
         // Check if passwords match
         if (password !== confirmPassword) {
+            console.log('Passwords do not match'); // Log password mismatch
             return res.status(400).json({ msg: "Passwords do not match" });
         }
 
         // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
+        console.log('Hashed password:', hashedPassword); // Log the hashed password
 
         // Create new user object
         const newUser = new PatientModel({
@@ -55,15 +128,20 @@ const signup = async (req, res) => {
             gender,
             address,
             password: hashedPassword,
-
         });
+
+        // Log the new user object
+        console.log('New user object:', newUser);
 
         // Save the user to the database
         await newUser.save();
+        console.log('User saved successfully'); // Log success
 
+        // Send successful response
         res.status(200).json({ msg: "User registered successfully", newUser });
+
     } catch (error) {
-        console.error('Signup error:', error);
+        console.error('Signup error:', error); // Log error
         res.status(500).json({ msg: "Internal server error", error: error.message });
     }
 };

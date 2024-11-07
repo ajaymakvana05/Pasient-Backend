@@ -25,7 +25,6 @@ app.use(
   })
 );
 
-
 app.use(cookie());
 
 app.use("/patient", PatientRoute);
