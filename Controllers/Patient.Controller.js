@@ -208,7 +208,7 @@ const resetpassword = async (req, res) => {
         res.status(500).json({ msg: error.message });
     }
 };
-// patient profile
+
 const PatientProfile = async (req, res) => {
     try {
         // console.log("Fetching Patient profile for ID:", req.PatientID);

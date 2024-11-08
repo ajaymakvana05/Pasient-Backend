@@ -1,9 +1,6 @@
 const jwt = require('jsonwebtoken');
 require("dotenv").config();
 
-
-
-
 const Auth = (req, res, next) => {
     // const { PatientToken } = req.cookies;
     let PatientToken = req.cookies.PatientToken || req.header('Authorization')?.replace('Bearer ', '');
@@ -76,9 +73,11 @@ const AdminAuth = (req, res, next) => {
 };
 
 
-
 const DoctorAuth = (req, res, next) => {
-    const { Doctortoken } = req.cookies;
+    // const { Doctortoken } = req.cookies;
+    let Doctortoken = req.cookies.Doctortoken || req.header('Authorization')?.replace('Bearer ', '');
+
+    console.log("Received token:", Doctortoken);  
 
     if (Doctortoken) {
         try {
