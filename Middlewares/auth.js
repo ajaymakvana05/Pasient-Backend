@@ -75,9 +75,9 @@ const AdminAuth = (req, res, next) => {
 
 const DoctorAuth = (req, res, next) => {
     // const { Doctortoken } = req.cookies;
-    let Doctortoken = req.cookies.Doctortoken || req.header('Authorization')?.replace('Bearer ', '');
+    let Doctortoken = req.cookies.DoctorToken || req.header('Authorization')?.replace('Bearer ', '');
 
-    console.log("Received token:", Doctortoken);  
+    console.log("Received token:", DoctorToken);  
 
     if (Doctortoken) {
         try {
